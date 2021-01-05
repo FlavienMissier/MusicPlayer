@@ -2,6 +2,10 @@
 #By Grayson and Flavien
 
 from mutagen.mp3 import MP3
+from mutagen.mp3 import MPEGInfo
+import eyed3
+import os
+import random
 
 # function to convert the seconds into readable format
 def convert(seconds):
@@ -11,17 +15,44 @@ def convert(seconds):
     seconds %= 60
     return hours, mins, seconds
 
-# Create an MP3 object
-# Specify the directory address to the mp3 file as a parameter
-audio = MP3("G:\Python37\Sample.mp3")
+print("\nInput how long you would like the playlist to go to:")
+length = int(input())*60
 
-# Contains all the metadata about the mp3 file
-audio_info = audio.info    
+sum = 0
+songs = []
 
-length_in_secs = int(audio_info.length)
+directory = "MusicPlayer\\music files"
 
-hours, mins, seconds = convert(length_in_secs)
+for song in os.listdir(directory):
+    if song.endswith(".mp3"):
+        songs.append(str(os.path.join(directory, song)))
+    else:
+        continue
 
-print("Hours:", hours)
+random.shuffle(songs)
+
+reach_length = True
+playlist = []
+
+while(reach_length):
+    current_song = songs.pop(0)
+    audiofile = eyed3.load(current_song)
+    if(sum + audiofile.info.time_secs <= length):
+        sum = sum + int(audiofile.info.time_secs)
+        playlist.append(current_song)
+    elif(len(songs)>0):
+        continue
+    else:
+        reach_length = False
+
+hours, mins, seconds = convert(sum)
+
+print("\nSongs in your playlist:\n")
+
+for x in playlist:
+    audiofile = eyed3.load(x)
+    print(audiofile.tag.title)
+
+print("\nHours:", hours)
 print("Minutes:", mins)
 print("Seconds:", seconds)
