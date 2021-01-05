@@ -7,15 +7,42 @@ from tkinter import ttk
 
 
 class Application:
-    isPlaying = False
-    searchEntry = ""
+    isPlaying = False  # True if music is playing
+    shuffle = False  # True if shuffle is activated
+    repeat = False  # True if repeat is activated
+    pause = False  # True if a song is paused
+
+    searchEntry = ""  # value from the search bar
     searchValue = ""
-    selection = []
+
+    availableSongs = []  # list of all available songs that can be played
+    currentPlaylist = []  # current list of songs playing
+    currentIndexInPlaylist = 0  # index in list of songs currently playing
+    selection = []  # selected songs
+
+    currentSongInfo = []  # the current song's name, album, artist, length...
+
+
+    def play_song(self, song):
+        # play the selected song
+
+    def shuffle_songs(self, song_list):
+        #shuffle
+
+    def handle_currently_playing(self):
+        if self.selection.count() == 0:  # count may not be the right function to find how many things it holds
+            print("Select something to play")
+        if self.shuffle:
+            self.shuffle_songs(self.selection)
+
+        self.play_song(self.selection[0])
 
     def play_button_pressed(self):
         print("play button pressed")
-        print(self.searchEntry.get())
         self.progressBar.step(10)
+        if not self.pause:
+
+        self.play_song(self.selection)
         # play the selected songs or playlist
 
     def next_button_pressed(self):
@@ -29,6 +56,15 @@ class Application:
 
     def search_button_pressed(self):
         print("search button pressed")
+        print(self.searchEntry.get())
+
+    def shuffle_button_pressed(self):
+        print("shuffle button pressed")
+
+    def repeat_button_pressed(self):
+        print("repeat button pressed")
+        self.repeat = not self.repeat
+        print(self.repeat)
 
     def __init__(self, root):
         root.title("Music Player")
@@ -56,6 +92,11 @@ class Application:
 
         self.progressBar = ttk.Progressbar(root, length=1000)
         self.progressBar.grid(row=10, columnspan=10, column=0)
+
+        self.repeatButton = ttk.Button(root, text='Repeat', command=lambda: self.repeat_button_pressed())
+        self.repeatButton.grid(row=4, column=2)
+
+
 
 root = Tk()
 
