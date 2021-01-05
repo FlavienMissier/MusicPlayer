@@ -1,11 +1,7 @@
 #MP3 Player
 #By Grayson and Flavien
 
-from mutagen.mp3 import MP3
-from mutagen.mp3 import MPEGInfo
-import eyed3
-import os
-import random
+import eyed3, os, random, pafy
 
 # function to convert the seconds into readable format
 def convert(seconds):
@@ -35,8 +31,11 @@ reach_length = True
 playlist = []
 
 while(reach_length):
-    current_song = songs.pop(0)
-    audiofile = eyed3.load(current_song)
+    if(len(songs) > 0):
+        current_song = songs.pop(0)
+        audiofile = eyed3.load(current_song)
+    else:
+        reach_length = False
     if(sum + audiofile.info.time_secs <= length):
         sum = sum + int(audiofile.info.time_secs)
         playlist.append(current_song)
@@ -56,3 +55,9 @@ for x in playlist:
 print("\nHours:", hours)
 print("Minutes:", mins)
 print("Seconds:", seconds)
+
+myvid = pafy.new("yIcrmHxUuFE")
+print("\n" + myvid.title)
+
+myvid2 = myvid.getbestaudio()
+myvid2.download(directory, quiet=True)
