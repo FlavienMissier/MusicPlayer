@@ -1,16 +1,27 @@
-# This is a sample Python script.
+#MP3 Player
+#By Grayson and Flavien
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from mutagen.mp3 import MP3
 
+# function to convert the seconds into readable format
+def convert(seconds):
+    hours = seconds // 3600
+    seconds %= 3600
+    mins = seconds // 60
+    seconds %= 60
+    return hours, mins, seconds
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Create an MP3 object
+# Specify the directory address to the mp3 file as a parameter
+audio = MP3("G:\Python37\Sample.mp3")
 
+# Contains all the metadata about the mp3 file
+audio_info = audio.info    
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+length_in_secs = int(audio_info.length)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+hours, mins, seconds = convert(length_in_secs)
+
+print("Hours:", hours)
+print("Minutes:", mins)
+print("Seconds:", seconds)
