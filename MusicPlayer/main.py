@@ -22,59 +22,75 @@ class Application:
 
     currentSongInfo = []  # the current song's name, album, artist, length...
 
-
+    # play the selected song
     def play_song(self, song):
-        # play the selected song
+        print("play song")
 
+    # shuffles songs in a list
     def shuffle_songs(self, song_list):
-        #shuffle
+        print("shuffle songs")
 
-    def handle_currently_playing(self):
+    # puts the selected songs in a list to be played and starts playing it
+    def start_playing_list(self):
         if self.selection.count() == 0:  # count may not be the right function to find how many things it holds
             print("Select something to play")
         if self.shuffle:
             self.shuffle_songs(self.selection)
 
-        self.play_song(self.selection[0])
+        self.currentPlaylist = self.selection
+        self.currentIndexInPlaylist = 0
+        self.play_song(self.currentPlaylist[self.currentIndexInPlaylist])
 
+    # when the play button is pressed play/pause the current song
     def play_button_pressed(self):
         print("play button pressed")
         self.progressBar.step(10)
-        if not self.pause:
+        if self.pause:  # resume song
+            self.pause = False
+            print("resuming")
+        else:
+            self.pause = True
+            print("pausing")
 
-        self.play_song(self.selection)
-        # play the selected songs or playlist
-
+    # goes to the next song
     def next_button_pressed(self):
         print("next button pressed")
-        # go to the next song
 
+    # goes to the previous song or goes back to beginning of song if it has been playing for long enough
     def previous_button_pressed(self):
         print("previous button pressed")
-        # go to the previous song or go back to beginning of song if it has been playing for long enough
         self.progressBar.step(-10)
 
+    # searches for matching song/authors/albums using the entry
     def search_button_pressed(self):
         print("search button pressed")
         print(self.searchEntry.get())
 
+    # sets shuffle to true/false
     def shuffle_button_pressed(self):
         print("shuffle button pressed")
+        self.shuffle = not self.shuffle
+        print(self.shuffle)
+        # add visual to show if button is pressed or not
 
+    # sets repeat to true/false
     def repeat_button_pressed(self):
         print("repeat button pressed")
         self.repeat = not self.repeat
         print(self.repeat)
+        # add visual to show if button is pressed or not
 
     def __init__(self, root):
+        # creating the window
         root.title("Music Player")
         root.geometry("1080x720")
         root.resizable(width=False, height=False)
-        style = ttk.Style
-        # style.configure("Style1", foreground="black", background="white")
-        # style.configure("TButton", font="Serif 15", padding=10, style="Style1")
-        # style.configure("TEntry", font="Serif 18", padding=10, style="Style1")
+        style = ttk.Style()
+        style.configure("Style1", foreground="black", background="white")
+        style.configure("TButton", font="Serif 10", padding=4)
+        style.configure("TEntry", font="Serif 12", padding=4)
 
+        # adding all the buttons and widgets
         self.searchEntry = ttk.Entry(root, textvariable=self.searchValue, width=50)
         self.searchEntry.grid(row=0, columnspan=4, column=2)
 
@@ -95,6 +111,9 @@ class Application:
 
         self.repeatButton = ttk.Button(root, text='Repeat', command=lambda: self.repeat_button_pressed())
         self.repeatButton.grid(row=4, column=2)
+
+        self.shuffleButton = ttk.Button(root, text='Shuffle', command=lambda: self.shuffle_button_pressed())
+        self.shuffleButton.grid(row=4, column=6)
 
 
 
