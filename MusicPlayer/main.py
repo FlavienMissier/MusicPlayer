@@ -1,7 +1,12 @@
 #MP3 Player
 #By Grayson and Flavien
 
+<<<<<<< HEAD
 import eyed3, os, random, pafy
+=======
+from tkinter import *
+from tkinter import ttk
+>>>>>>> Flavien
 
 # function to convert the seconds into readable format
 def convert(seconds):
@@ -11,14 +16,55 @@ def convert(seconds):
     seconds %= 60
     return hours, mins, seconds
 
+<<<<<<< HEAD
 print("\nInput how long you would like the playlist to go to:")
 length = int(input())*60
 
 sum = 0
 songs = []
+=======
+class Song:
+    title = ""
+    artist = ""
+    album = ""
+    trackNumber = ""
+    length = ""
+    genre = ""
+    year = ""
+    rating = ""
+    contributingArtists = ""
+    albumArtist = ""
+    bitRate = ""
+    size = ""
+    dateCreated = ""  # date the file was created
+    dateAddedToLibrary = ""  # date the song was added to the music player's library
+    fileType = ""
+    filePath = ""  # path to the song file
+
+    def __init__(self, title="", artist="", album="", track_number="", length="", genre="", year="",
+                 rating="", contributing_artists="", filetype="", album_artist="", bit_rate="", size="",
+                 date_created="", date_added_to_library="", filepath=""):
+        self.fileType = filetype
+        self.year = year
+        self.genre = genre
+        self.length = length
+        self.trackNumber = track_number
+        self.album = album
+        self.artist = artist
+        self.title = title
+        self.rating = rating
+        self.size = size
+        self.bitRate = bit_rate
+        self.albumArtist = album_artist
+        self.contributingArtists = contributing_artists
+        self.dateCreated = date_created
+        self.dateAddedToLibrary = date_added_to_library
+        self.filePath = filepath
+>>>>>>> Flavien
 
 directory = "MusicPlayer\\music files"
 
+<<<<<<< HEAD
 for song in os.listdir(directory):
     if song.endswith(".mp3"):
         songs.append(str(os.path.join(directory, song)))
@@ -61,3 +107,183 @@ print("\n" + myvid.title)
 
 myvid2 = myvid.getbestaudio()
 myvid2.download(directory, quiet=True)
+=======
+class Application:
+    isPlaying = False  # True if music is playing
+    shuffle = False  # True if shuffle is activated
+    repeat = False  # True if repeat is activated
+    pause = False  # True if a song is paused
+
+    searchEntry = ""  # entry from the search bar
+    searchValue = ""
+
+    availableSongs = []  # list of all available songs that can be played
+    currentVisiblePlaylist = []  # current list of songs playing in the order seen by the user
+    currentPlaylist = []  # current list of songs playing in order that they will be played this is separate from the
+    #  visible playlist so that it can be internally shuffled while remaining in the same order for the user
+    currentIndexInPlaylist = 0  # index in list of songs currently playing
+    selection = []  # selected songs
+
+    # play the selected song
+    def play_song(self, song):
+        self.isPlaying = True
+        print("play song")
+
+    # pause currently playing song to be resumed later
+    def pause_song(self):
+        print("pause")
+
+    # resume currently paused song
+    def resume_song(self):
+        print("resume")
+
+    # changes the audio volume
+    def change_volume(self, volume):
+        print("change volume")
+
+    # gets song data from the file given the path to that file and returns a Song object using that data
+    def get_song_data(self, path):
+        song = Song(filepath=path)  # check if path is correct then get data
+        return song
+
+    # adds song to the library given the path calling get_song_data to get the data
+    def add_song_to_library(self, song_path):
+        new_song = self.get_song_data(song_path)  # check if path is correct
+        self.availableSongs.append(new_song)
+        # also add songs and their data to a file
+
+    def add_song_to_list(self, song, song_list):
+        if song.length != 0:  # perform checks to make sure song is playable check for proper song type and if it exists
+            song_list.append(song)
+
+    # finds songs and calls add_song_to_library to add them
+    def find_songs(self, path):
+        print("looking for songs at path: ", path)
+        # look for songs at path location
+        # add_song_to_library(song_path)
+
+    # sorts songs, attribute is the attribute to be sorted by, song_list is the list to sort, and reverse decides
+    # whether the songs will be sorted in ascending or descending order
+    def sort_songs_by(self, attribute, song_list, reverse):
+        print("sorting songs by attribute: ", attribute)
+
+    # shuffles songs in a list
+    def shuffle_songs(self, song_list):
+        print("shuffle songs")
+
+    # puts the selected songs in a list to be played and starts playing it
+    def start_playing_list(self):
+        if len(self.selection) == 0:  # if the list is empty
+            print("Select something to play")
+        else:
+            if self.shuffle:
+                self.shuffle_songs(self.selection)
+
+            self.currentPlaylist = self.selection
+            self.currentVisiblePlaylist = self.currentPlaylist
+            self.currentIndexInPlaylist = 0
+            self.play_song(self.currentPlaylist[self.currentIndexInPlaylist])
+
+    # handles what happens after a song has finished playing
+    def handle_next_song(self):
+        if self.currentIndexInPlaylist >= len(self.currentPlaylist) - 1:  # if the end of the list has been reached
+            if self.repeat:
+                self.currentIndexInPlaylist = 0
+            else:
+                self.isPlaying = False
+        else:
+            self.currentIndexInPlaylist += 1
+
+        self.play_song(self.currentPlaylist[self.currentIndexInPlaylist])
+
+    # when the play button is pressed play/pause the current song
+    def play_button_pressed(self):
+        print("play button pressed")
+        self.progressBar.step(10)
+        if self.pause:  # resume song
+            self.pause = False
+            self.isPlaying = True
+            print("resuming")
+        else:
+            self.pause = True
+            self.isPlaying = False
+            print("pausing")
+        # add visual to show if button is on pause or play
+
+    # goes to the next song
+    def next_button_pressed(self):
+        print("next button pressed")
+
+    # goes to the previous song or goes back to beginning of song if it has been playing for long enough
+    def previous_button_pressed(self):
+        print("previous button pressed")
+        self.progressBar.step(-10)
+
+    # searches for matching song/authors/albums using the entry
+    def search_button_pressed(self):
+        print("search button pressed")
+        print(self.searchEntry.get())
+
+    # sets shuffle to true/false
+    def shuffle_button_pressed(self):
+        print("shuffle button pressed")
+        if self.shuffle:
+            self.shuffle = False
+            self.currentPlaylist = self.currentVisiblePlaylist
+        else:
+            self.shuffle = True
+            self.shuffle_songs(self.currentPlaylist)  # perhaps exclude already played songs?
+        print(self.shuffle)
+        # add visual to show if button is pressed or not
+
+    # sets repeat to true/false
+    def repeat_button_pressed(self):
+        print("repeat button pressed")
+        self.repeat = not self.repeat
+        print(self.repeat)
+        # add visual to show if button is pressed or not
+
+    def __init__(self, root):
+        # creating the window
+        root.title("Music Player")
+        root.geometry("1080x720")
+        root.resizable(width=False, height=False)
+        style = ttk.Style()
+        style.configure("Style1", foreground="black", background="white")
+        style.configure("TButton", font="Serif 10", padding=4)
+        style.configure("TEntry", font="Serif 12", padding=4)
+
+        # adding all the buttons and widgets
+        self.searchEntry = ttk.Entry(root, textvariable=self.searchValue, width=50)
+        self.searchEntry.grid(row=0, columnspan=4, column=2)
+
+        self.searchButton = ttk.Button(root, text='Search', command=lambda: self.search_button_pressed())
+        self.searchButton.grid(row=0, column=5)
+
+        self.playButton = ttk.Button(root, text='Play', command=lambda: self.play_button_pressed())
+        self.playButton.grid(row=4, column=4)
+
+        self.nextButton = ttk.Button(root, text='Next', command=lambda: self.next_button_pressed())
+        self.nextButton.grid(row=4, column=5)
+
+        self.previousButton = ttk.Button(root, text='Previous', command=lambda: self.previous_button_pressed())
+        self.previousButton.grid(row=4, column=3)
+
+        self.progressBar = ttk.Progressbar(root, length=1000)
+        self.progressBar.grid(row=10, columnspan=10, column=0)
+
+        self.repeatButton = ttk.Button(root, text='Repeat', command=lambda: self.repeat_button_pressed())
+        self.repeatButton.grid(row=4, column=2)
+
+        self.shuffleButton = ttk.Button(root, text='Shuffle', command=lambda: self.shuffle_button_pressed())
+        self.shuffleButton.grid(row=4, column=6)
+
+        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search subfolders too
+
+
+root = Tk()
+
+application = Application(root)
+
+root.mainloop()
+>>>>>>> Flavien
