@@ -1,5 +1,5 @@
-#MP3 Player
-#By Grayson and Flavien
+# MP3 Player
+# By Grayson and Flavien
 
 from tkinter import *
 from tkinter import ttk
@@ -7,6 +7,9 @@ import eyed3
 import random
 import pafy
 import os
+import random
+import vlc
+
 
 class Song:
     audiofile = ""
@@ -104,17 +107,13 @@ class Application:
     def sort_songs_by(self, attribute, song_list, reverse):
         print("sorting songs by attribute: ", attribute)
 
-    # shuffles songs in a list
-    def shuffle_songs(self, song_list):
-        return random.shuffle(song_list)
-
     # puts the selected songs in a list to be played and starts playing it
     def start_playing_list(self):
         if len(self.selection) == 0:  # if the list is empty
             print("Select something to play")
         else:
             if self.shuffle:
-                self.shuffle_songs(self.selection)
+                random.shuffle(self.selection)
 
             self.currentPlaylist = self.selection
             self.currentVisiblePlaylist = self.currentPlaylist
@@ -170,7 +169,7 @@ class Application:
             self.currentPlaylist = self.currentVisiblePlaylist
         else:
             self.shuffle = True
-            self.shuffle_songs(self.currentPlaylist)  # perhaps exclude already played songs?
+            random.shuffle(self.currentPlaylist)  # perhaps exclude already played songs?
         print(self.shuffle)
         # add visual to show if button is pressed or not
 
@@ -216,8 +215,14 @@ class Application:
         self.shuffleButton = ttk.Button(root, text='Shuffle', command=lambda: self.shuffle_button_pressed())
         self.shuffleButton.grid(row=4, column=6)
 
-        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search subfolders too
+        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search
+        # sub-folders too
 
+
+p = vlc.MediaPlayer('C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music '
+                    'files\\Chopin, Nocturnes, Op 9 No 2.mp3')
+p.play()
+# p.stop()
 
 root = Tk()
 

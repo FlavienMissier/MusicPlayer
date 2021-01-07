@@ -1,7 +1,11 @@
-#MP3 Player
-#By Grayson and Flavien
+# MP3 Player
+# By Grayson and Flavien
 
-import eyed3, os, random, pafy
+import eyed3
+import os
+import random
+import pafy
+
 
 # function to convert the seconds into readable format
 def convert(seconds):
@@ -10,6 +14,7 @@ def convert(seconds):
     mins = seconds // 60
     seconds %= 60
     return hours, mins, seconds
+
 
 print("\nInput how long you would like the playlist to go to:")
 length = int(input())*60
@@ -38,7 +43,7 @@ while(True):
     if(sum + audiofile.info.time_secs <= length):
         sum = sum + int(audiofile.info.time_secs)
         playlist.append(current_song)
-    elif(len(songs)>0):
+    elif len(songs)>0:
         continue
     else:
         break
