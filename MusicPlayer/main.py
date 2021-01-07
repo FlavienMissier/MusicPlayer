@@ -1,9 +1,9 @@
-# Basic Metadata for music files:
-# Title, TrackNumber, Contributing artists, Album, Type, Size, Date created, Date modified, Album artist, Bit rate
-# Genre, Length, Protected, Rating, Year
+# MP3 Player
+# By Grayson and Flavien
 
 from tkinter import *
 from tkinter import ttk
+import random
 
 
 class Song:
@@ -104,17 +104,13 @@ class Application:
     def sort_songs_by(self, attribute, song_list, reverse):
         print("sorting songs by attribute: ", attribute)
 
-    # shuffles songs in a list
-    def shuffle_songs(self, song_list):
-        print("shuffle songs")
-
     # puts the selected songs in a list to be played and starts playing it
     def start_playing_list(self):
         if len(self.selection) == 0:  # if the list is empty
             print("Select something to play")
         else:
             if self.shuffle:
-                self.shuffle_songs(self.selection)
+                random.shuffle(self.selection)
 
             self.currentPlaylist = self.selection
             self.currentVisiblePlaylist = self.currentPlaylist
@@ -169,7 +165,7 @@ class Application:
             self.currentPlaylist = self.currentVisiblePlaylist
         else:
             self.shuffle = True
-            self.shuffle_songs(self.currentPlaylist)  # perhaps exclude already played songs?
+            random.shuffle(self.currentPlaylist)  # perhaps exclude already played songs?
         print(self.shuffle)
         # add visual to show if button is pressed or not
 
@@ -215,7 +211,8 @@ class Application:
         self.shuffleButton = ttk.Button(root, text='Shuffle', command=lambda: self.shuffle_button_pressed())
         self.shuffleButton.grid(row=4, column=6)
 
-        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search subfolders too
+        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search
+        # sub-folders too
 
 
 root = Tk()
