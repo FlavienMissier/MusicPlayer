@@ -4,6 +4,7 @@
 from tkinter import *
 from tkinter import ttk
 import random
+import vlc
 
 
 class Song:
@@ -214,6 +215,11 @@ class Application:
         # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search
         # sub-folders too
 
+
+p = vlc.MediaPlayer('C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music '
+                    'files\\Chopin, Nocturnes, Op 9 No 2.mp3')
+p.play()
+# p.stop()
 
 root = Tk()
 

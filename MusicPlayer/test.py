@@ -6,6 +6,7 @@ import os
 import random
 import pafy
 
+
 # function to convert the seconds into readable format
 def convert(seconds):
     hours = seconds // 3600
@@ -13,6 +14,7 @@ def convert(seconds):
     mins = seconds // 60
     seconds %= 60
     return hours, mins, seconds
+
 
 print("\nInput how long you would like the playlist to go to:")
 length = int(input())*60
@@ -33,16 +35,17 @@ random.shuffle(songs)
 reach_length = True
 playlist = []
 
-while(reach_length):
+while reach_length:
     if(len(songs) > 0):
         current_song = songs.pop(0)
         audiofile = eyed3.load(current_song)
     else:
         reach_length = False
-    if(sum + audiofile.info.time_secs <= length):
+        break
+    if sum + audiofile.info.time_secs <= length:
         sum = sum + int(audiofile.info.time_secs)
         playlist.append(current_song)
-    elif(len(songs)>0):
+    elif len(songs)>0:
         continue
     else:
         reach_length = False
