@@ -1,7 +1,10 @@
-#MP3 Player
-#By Grayson and Flavien
+# MP3 Player
+# By Grayson and Flavien
 
-import eyed3, os, random, pafy
+import eyed3
+import os
+import random
+import pafy
 
 # function to convert the seconds into readable format
 def convert(seconds):
