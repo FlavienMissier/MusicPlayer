@@ -7,6 +7,7 @@ import eyed3
 import random
 import pafy
 import os
+os.add_dll_directory("C:\\Program Files\\VideoLAN\\VLC")
 import random
 import vlc
 
@@ -32,18 +33,18 @@ class Song:
     def __init__(self, filepath=""):
         splitfile = filepath.split(".")
         self.audiofile = eyed3.load(filepath)
-        self.fileType = splitfile[1]
-        self.year = self.audiofile.tag.year
+        self.fileType = splitfile[len(splitfile)-1]
+        self.year = self.audiofile.tag.original_release_date
         self.genre = self.audiofile.tag.genre
-        self.length = self.audiofile.tag.length
-        self.trackNumber = self.audiofile.tag.track
+        self.length = self.audiofile.info.time_secs
+        #self.trackNumber = self.audiofile.tag.track
         self.album = self.audiofile.tag.album
         self.artist = self.audiofile.tag.artist
         self.title = self.audiofile.tag.title
         self.rating = self.audiofile.tag.popularities
         #self.size = self.audiofile.tag.filesize
         #self.bitRate = self.audiofile.tag.bit-rate
-        self.albumArtist = self.audiofile.tag.b
+        #self.albumArtist = self.audiofile.tag.b
         #self.dateCreated = self.audiofile.tag.date_created
         #self.dateAddedToLibrary = date_added_to_library
         self.filePath = filepath
@@ -97,10 +98,20 @@ class Application:
             song_list.append(song)
 
     # finds songs and calls add_song_to_library to add them
-    def find_songs(self, path):
-        print("looking for songs at path: ", path)
-        # look for songs at path location
-        # add_song_to_library(song_path)
+    def find_songs(self):
+        directory = "MusicPlayer\\music files"
+        acceptedFileTypes = "mp3 webm"
+
+        print("wut")
+
+        for song in os.listdir(directory):
+            SongObject = Song(str(os.path.join(directory, song)))
+            if (acceptedFileTypes.find(SongObject.fileType)>-1):
+                self.currentVisiblePlaylist.append(SongObject)
+                self.currentPlaylist.append(SongObject)
+                print(SongObject.filePath)
+            else:
+                continue
 
     # sorts songs, attribute is the attribute to be sorted by, song_list is the list to sort, and reverse decides
     # whether the songs will be sorted in ascending or descending order
@@ -135,6 +146,8 @@ class Application:
     # when the play button is pressed play/pause the current song
     def play_button_pressed(self):
         print("play button pressed")
+        p = vlc.MediaPlayer(self.currentPlaylist[self.currentIndexInPlaylist].filePath)
+        p.play()
         self.progressBar.step(10)
         if self.pause:  # resume song
             self.pause = False
@@ -181,6 +194,8 @@ class Application:
         # add visual to show if button is pressed or not
 
     def __init__(self, root):
+        self.find_songs()
+
         # creating the window
         root.title("Music Player")
         root.geometry("1080x720")
@@ -219,10 +234,7 @@ class Application:
         # sub-folders too
 
 
-p = vlc.MediaPlayer('C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music '
-                    'files\\Chopin, Nocturnes, Op 9 No 2.mp3')
-p.play()
-# p.stop()
+
 
 root = Tk()
 
