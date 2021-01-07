@@ -27,22 +27,21 @@ for song in os.listdir(directory):
 
 random.shuffle(songs)
 
-reach_length = True
 playlist = []
 
-while(reach_length):
+while(True):
     if(len(songs) > 0):
         current_song = songs.pop(0)
         audiofile = eyed3.load(current_song)
     else:
-        reach_length = False
+        break
     if(sum + audiofile.info.time_secs <= length):
         sum = sum + int(audiofile.info.time_secs)
         playlist.append(current_song)
     elif(len(songs)>0):
         continue
     else:
-        reach_length = False
+        break
 
 hours, mins, seconds = convert(sum)
 

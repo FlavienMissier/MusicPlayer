@@ -3,8 +3,13 @@
 
 from tkinter import *
 from tkinter import ttk
+import eyed3
+import random
+import pafy
+import os
 
 class Song:
+    audiofile = ""
     title = ""
     artist = ""
     album = ""
@@ -13,36 +18,32 @@ class Song:
     genre = ""
     year = ""
     rating = ""
-    contributingArtists = ""
     albumArtist = ""
-    bitRate = ""
-    size = ""
-    dateCreated = ""  # date the file was created
-    dateAddedToLibrary = ""  # date the song was added to the music player's library
+    #bitRate = ""
+    #size = ""
+    #dateCreated = ""  # date the file was created
+    #dateAddedToLibrary = ""  # date the song was added to the music player's library
     fileType = ""
     filePath = ""  # path to the song file
 
-    def __init__(self, title="", artist="", album="", track_number="", length="", genre="", year="",
-                 rating="", contributing_artists="", filetype="", album_artist="", bit_rate="", size="",
-                 date_created="", date_added_to_library="", filepath=""):
-        self.fileType = filetype
-        self.year = year
-        self.genre = genre
-        self.length = length
-        self.trackNumber = track_number
-        self.album = album
-        self.artist = artist
-        self.title = title
-        self.rating = rating
-        self.size = size
-        self.bitRate = bit_rate
-        self.albumArtist = album_artist
-        self.contributingArtists = contributing_artists
-        self.dateCreated = date_created
-        self.dateAddedToLibrary = date_added_to_library
+    def __init__(self, filepath=""):
+        splitfile = filepath.split(".")
+        self.audiofile = eyed3.load(filepath)
+        self.fileType = splitfile[1]
+        self.year = self.audiofile.tag.year
+        self.genre = self.audiofile.tag.genre
+        self.length = self.audiofile.tag.length
+        self.trackNumber = self.audiofile.tag.track
+        self.album = self.audiofile.tag.album
+        self.artist = self.audiofile.tag.artist
+        self.title = self.audiofile.tag.title
+        self.rating = self.audiofile.tag.popularities
+        #self.size = self.audiofile.tag.filesize
+        #self.bitRate = self.audiofile.tag.bit-rate
+        self.albumArtist = self.audiofile.tag.b
+        #self.dateCreated = self.audiofile.tag.date_created
+        #self.dateAddedToLibrary = date_added_to_library
         self.filePath = filepath
-
-directory = "MusicPlayer\\music files"
 
 class Application:
     isPlaying = False  # True if music is playing
@@ -105,7 +106,7 @@ class Application:
 
     # shuffles songs in a list
     def shuffle_songs(self, song_list):
-        print("shuffle songs")
+        return random.shuffle(song_list)
 
     # puts the selected songs in a list to be played and starts playing it
     def start_playing_list(self):
@@ -157,8 +158,9 @@ class Application:
 
     # searches for matching song/authors/albums using the entry
     def search_button_pressed(self):
-        print("search button pressed")
-        print(self.searchEntry.get())
+        songSearched = pafy.new(self.searchEntry.get())
+        newSong = songSearched.getbestaudio()
+        newSong.download("C:\\Users\\vidrinen\\Documents\\GitHub\\MusicPlayer\\MusicPlayer\\music files", quiet=True)
 
     # sets shuffle to true/false
     def shuffle_button_pressed(self):
