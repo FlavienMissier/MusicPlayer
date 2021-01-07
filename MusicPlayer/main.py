@@ -1,8 +1,9 @@
-#MP3 Player
-#By Grayson and Flavien
+# MP3 Player
+# By Grayson and Flavien
 
 from tkinter import *
 from tkinter import ttk
+
 
 class Song:
     title = ""
@@ -42,7 +43,6 @@ class Song:
         self.dateAddedToLibrary = date_added_to_library
         self.filePath = filepath
 
-directory = "MusicPlayer\\music files"
 
 class Application:
     isPlaying = False  # True if music is playing
@@ -214,7 +214,8 @@ class Application:
         self.shuffleButton = ttk.Button(root, text='Shuffle', command=lambda: self.shuffle_button_pressed())
         self.shuffleButton.grid(row=4, column=6)
 
-        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search subfolders too
+        # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search
+        # sub-folders too
 
 
 root = Tk()
