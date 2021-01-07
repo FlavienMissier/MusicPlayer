@@ -4,7 +4,6 @@
 from tkinter import *
 from tkinter import ttk
 import eyed3
-import random
 import pafy
 import os
 import random
@@ -22,10 +21,10 @@ class Song:
     year = ""
     rating = ""
     albumArtist = ""
-    #bitRate = ""
-    #size = ""
-    #dateCreated = ""  # date the file was created
-    #dateAddedToLibrary = ""  # date the song was added to the music player's library
+    # bitRate = ""
+    # size = ""
+    # dateCreated = ""  # date the file was created
+    # dateAddedToLibrary = ""  # date the song was added to the music player's library
     fileType = ""
     filePath = ""  # path to the song file
 
@@ -41,12 +40,13 @@ class Song:
         self.artist = self.audiofile.tag.artist
         self.title = self.audiofile.tag.title
         self.rating = self.audiofile.tag.popularities
-        #self.size = self.audiofile.tag.filesize
-        #self.bitRate = self.audiofile.tag.bit-rate
+        # self.size = self.audiofile.tag.filesize
+        # self.bitRate = self.audiofile.tag.bit-rate
         self.albumArtist = self.audiofile.tag.b
-        #self.dateCreated = self.audiofile.tag.date_created
-        #self.dateAddedToLibrary = date_added_to_library
+        # self.dateCreated = self.audiofile.tag.date_created
+        # self.dateAddedToLibrary = date_added_to_library
         self.filePath = filepath
+
 
 class Application:
     isPlaying = False  # True if music is playing
@@ -64,18 +64,28 @@ class Application:
     currentIndexInPlaylist = 0  # index in list of songs currently playing
     selection = []  # selected songs
 
+    player = vlc.MediaPlayer()
+
     # play the selected song
     def play_song(self, song):
         self.isPlaying = True
+        self.player = vlc.MediaPlayer(song.filePath)
+        self.player.play()
+
         print("play song")
 
     # pause currently playing song to be resumed later
-    def pause_song(self):
-        print("pause")
-
-    # resume currently paused song
-    def resume_song(self):
-        print("resume")
+    def pause_or_resume_song(self):
+        if self.pause:  # resume song
+            self.player.pause()
+            self.pause = False
+            self.isPlaying = True
+            print("resuming")
+        else:  # pause
+            self.player.pause()
+            self.pause = True
+            self.isPlaying = False
+            print("pausing")
 
     # changes the audio volume
     def change_volume(self, volume):
@@ -134,26 +144,18 @@ class Application:
 
     # when the play button is pressed play/pause the current song
     def play_button_pressed(self):
-        print("play button pressed")
-        self.progressBar.step(10)
-        if self.pause:  # resume song
-            self.pause = False
-            self.isPlaying = True
-            print("resuming")
-        else:
-            self.pause = True
-            self.isPlaying = False
-            print("pausing")
+        self.pause_or_resume_song()
+        self.playButton.keys()
         # add visual to show if button is on pause or play
 
     # goes to the next song
     def next_button_pressed(self):
-        print("next button pressed")
+        self.handle_next_song()
 
     # goes to the previous song or goes back to beginning of song if it has been playing for long enough
     def previous_button_pressed(self):
         print("previous button pressed")
-        self.progressBar.step(-10)
+        self.player.play()
 
     # searches for matching song/authors/albums using the entry
     def search_button_pressed(self):
@@ -215,14 +217,26 @@ class Application:
         self.shuffleButton = ttk.Button(root, text='Shuffle', command=lambda: self.shuffle_button_pressed())
         self.shuffleButton.grid(row=4, column=6)
 
+        # test stuff
+
+        song1 = Song("C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music files\\Chopin, Nocturnes, Op 9 No 2.mp3")
+        song2 = Song("C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music files\\Dayglow - Can I Call You Tonight (Official Video).mp3")
+
+        self.selection.append(song1)
+        self.selection.append(song2)
+        self.player.play()
+
+        self.start_playing_list()
+
+        media1 = vlc.Media("C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music files\\Chopin, Nocturnes, Op 9 No 2.mp3")
+        medialist = vlc.MediaList(self.selection)
+
+        #media1.
+        # test stuff
+
         # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search
         # sub-folders too
 
-
-p = vlc.MediaPlayer('C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music '
-                    'files\\Chopin, Nocturnes, Op 9 No 2.mp3')
-p.play()
-# p.stop()
 
 root = Tk()
 
