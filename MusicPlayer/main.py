@@ -128,7 +128,7 @@ class Application:
             SongObject = Song(str(os.path.join(directory, song)))
             if (acceptedFileTypes.find(SongObject.fileType)>-1):
                 self.currentVisiblePlaylist.append(SongObject)
-                self.currentPlaylist.append(SongObject)
+                self.selection.append(SongObject)
             else:
                 continue
 
@@ -142,11 +142,13 @@ class Application:
         if len(self.selection) == 0:  # if the list is empty
             print("Select something to play")
         else:
+            for song in self.selection:
+                self.currentPlaylist.append(song.filePath)
+            
             if self.shuffle:
-                random.shuffle(self.selection)
+                random.shuffle(self.currentPlaylist)
 
-            self.currentPlaylist = self.selection
-            self.currentVisiblePlaylist = self.currentPlaylist
+            self.currentVisiblePlaylist = self.selection
             self.currentIndexInPlaylist = 0
             # self.play_song(self.currentPlaylist[self.currentIndexInPlaylist])  # old
 
@@ -194,8 +196,6 @@ class Application:
             self.currentPlaylist = self.currentVisiblePlaylist
         else:
             self.shuffle = True
-            random.shuffle(self.currentPlaylist)  # perhaps exclude already played songs?
-        # add visual to show if button is pressed or not
 
     # sets repeat to true/false
     def repeat_button_pressed(self):
@@ -274,13 +274,6 @@ class Application:
         # need to add volume bar
         # need interactive progress bar
 
-        # test code
-
-        self.selection = ["C:\\Users\\Flavien Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music files\\Chopin, "
-         "Nocturnes, Op 9 No 2.mp3", "C:\\Users\\Flavien "
-                                     "Missier\\Desktop\\code\\python\\MusicPlayer\\MusicPlayer\\music "
-                                     "files\\Dayglow - Can I Call You Tonight (Official Video).mp3"]
-        self.start_playing_list()
         # test code
 
         # get songs' data from a file if it doesn't exist create it and ask the user for a path to their songs search
