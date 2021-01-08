@@ -119,7 +119,7 @@ class Application:
             if (acceptedFileTypes.find(SongObject.fileType)>-1):
                 self.currentVisiblePlaylist.append(SongObject)
                 self.currentPlaylist.append(SongObject)
-                print(SongObject.filePath)
+                print(SongObject.title)
             else:
                 continue
 
@@ -149,8 +149,11 @@ class Application:
             else:
                 self.isPlaying = False
         else:
+            print("yo")
             self.currentIndexInPlaylist += 1
 
+        print(self.currentIndexInPlaylist)
+        print(self.currentPlaylist[self.currentIndexInPlaylist].title)
         self.play_song(self.currentPlaylist[self.currentIndexInPlaylist])
 
     # when the play button is pressed play/pause the current song
